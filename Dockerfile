@@ -5,7 +5,7 @@ WORKDIR /app
 # Copy requirements and install
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir python-dotenv  # if you have .env
+RUN pip install --no-cache-dir python-dotenv  # if you use .env files
 
 # Copy app code
 COPY . .
@@ -14,7 +14,7 @@ COPY . .
 EXPOSE 8000
 
 # Set Flask environment
-ENV FLASK_APP=main.py           # Replace 'main.py' with your entry file
+ENV FLASK_APP=main.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=8000
 
