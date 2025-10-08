@@ -150,15 +150,12 @@ class BorderBoxProductExtractor:
                 "category": "..."
             }
             """
+
+            # Correct GPT Vision call
             response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[{
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": prompt},
-                        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image_data}", "detail":"high"}}
-                    ]
-                }],
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt}],
+                input=[{"type": "image", "image_url": f"data:image/png;base64,{image_data}"}],
                 temperature=0.1
             )
 
