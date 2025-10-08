@@ -19,23 +19,27 @@ jobs:
         with:
           python-version: 3.11
 
-      # 3. Install dependencies
+      # 3. Install dependencies locally (optional, for lint/tests)
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # 4. Build Docker image
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/python-app:latest .
 
+      # 5. Login to Docker Hub
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+      # 6. Push Docker image
       - name: Push image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/python-app:latest
 
+      # 7. Deploy to VPS
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
