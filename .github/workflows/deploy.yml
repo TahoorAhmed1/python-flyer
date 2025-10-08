@@ -9,24 +9,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repo
-      - name: Checkout repository
+      # 1. Checkout Code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      # 2. Login to Docker Hub
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+      # 2. Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          python-version: 3.11
 
-      # 3. Build & Push Docker image
-      - name: Build and Push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/python-app:latest
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
+      # 4. Build Docker image
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/python-app:latest .
+
+      # 5. Login to Docker Hub
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # 6. Push image to Docker Hub
+      - name: Push image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/python-app:latest
+
+      # 7. Deploy to VPS
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.0
         with:
