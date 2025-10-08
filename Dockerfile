@@ -1,22 +1,19 @@
 FROM python:3.11-slim
 
+# Set working directory
 WORKDIR /app
 
-# Copy requirements and install
+# Copy requirements
 COPY requirements.txt .
+
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir python-dotenv  # if you use .env files
 
 # Copy app code
 COPY . .
 
-# Expose port
+# Expose the port Flask will run on
 EXPOSE 8000
 
-# Set Flask environment
-ENV FLASK_APP=main.py
-ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_RUN_PORT=8000
-
 # Run Flask
-CMD ["flask", "run"]
+CMD ["python", "main.py"]

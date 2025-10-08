@@ -1,7 +1,7 @@
-flask==3.0.3
-werkzeug==3.0.3
-opencv-python-headless==4.10.0.84
-numpy==1.26.4
-cloudinary==1.41.0
-openai==1.40.3
-requests==2.32.3
+flask
+opencv-python-headless
+numpy
+cloudinary
+openai
+requests
+python-dotenv
