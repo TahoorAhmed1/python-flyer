@@ -44,4 +44,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/python-app:latest
             docker stop python-app || true
             docker rm python-app || true
-            docker run -d -p 8000:3000 --name python-app --restart always ${{ secrets.DOCKER_USERNAME }}/python-app:latest
+            docker run -d -p 8000:8000 --name python-app --restart always ${{ secrets.DOCKER_USERNAME }}/python-app:latest
